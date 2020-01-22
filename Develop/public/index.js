@@ -19,10 +19,23 @@ let shouldNavigateAway = false;
 
 init();
 
+//new function from Jackson
 async function init() {
+  if (location.pathname.includes("/exercise") && location.search.split("=")[1] === undefined) {
+    console.log("excersise")
+    const newWorkout = await API.createWorkout();
+    const workout = await API.getLastWorkout();
+    if (workout) {
+      location.search = "?id=" + workout._id;
+    }
+    else {
+      newWorkout.classList.add("")
+    }
+    return console.log(newWorkout);
+  }
   if (location.search.split("=")[1] === undefined) {
     const workout = await API.getLastWorkout();
-    if(workout) {
+    if (workout) {
       location.search = "?id=" + workout._id;
     }
     else {
@@ -30,6 +43,19 @@ async function init() {
     }
   }
 }
+
+//old broken function
+// async function init() {
+//   if (location.search.split("=")[1] === undefined) {
+//     const workout = await API.getLastWorkout();
+//     if(workout) {
+//       location.search = "?id=" + workout._id;
+//     }
+//     else {
+//       newWorkout.classList.add("")
+//     }
+//   }
+// }
 
 function handleWorkoutTypeChange(event) {
   workoutType = event.target.value;
